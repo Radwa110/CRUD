@@ -12,4 +12,4 @@ class user(models.Model):
     register = models.DateTimeField(auto_now_add=True, null=True)
     class goal :
         db_table = 'user' 
-    
+
