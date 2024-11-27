@@ -52,26 +52,33 @@ def add(request):
         return render(request, 'CRUD_user/add.html')
 
 def update(request):
-    if request.method=='POST':
-        if request.POST.get('id') and request.POST.get('name') and request.POST.get('last_name') and request.POST.get('mail') and request.POST.get('phone') and request.POST.get('born'):
-           user_id_old=request.POST.get('id')
-           user_old =user()
-           user_old =user.objects.get(id = user_id_old)
+    if request.method == 'POST':
+        if (
+            request.POST.get('id') and 
+            request.POST.get('name') and 
+            request.POST.get('last_name') and 
+            request.POST.get('mail') and 
+            request.POST.get('phone') and 
+            request.POST.get('born')
+        ):
+            user_id_old = request.POST.get('id')
+            # جلب المستخدم الموجود من قاعدة البيانات
+            user_old = user.objects.get(id=user_id_old)
 
-           users=user()
-           user.id=request.POST.get('id')
-           user.name = request.POST.get('name')
-           user.last_name = request.POST.get('last_name')
-           user.mail = request.POST.get('mail')
-           user.phone = request.POST.get('phone')
-           user.born = request.POST.get('born')
-           user.register = user_old.register 
-           user.save()
-           return redirect('list')
+            # تحديث بيانات المستخدم الموجود
+            user_old.name = request.POST.get('name')
+            user_old.last_name = request.POST.get('last_name')
+            user_old.mail = request.POST.get('mail')
+            user_old.phone = request.POST.get('phone')
+            user_old.born = request.POST.get('born')
+            user_old.save()  # حفظ التعديلات في قاعدة البيانات
+            
+            return redirect('list')
     else:  
-      users=user.objects.all()
-      datos={'user':users}
-      return render(request , "CRUD_user/update.html",datos)
+        users = user.objects.all()
+        datos = {'user': users}
+        return render(request, "CRUD_user/update.html", datos)
+
 
 def eliminate(request):
     if request.method=='POST':
