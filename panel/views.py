@@ -81,13 +81,15 @@ def update(request):
 
 
 def eliminate(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         if request.POST.get('id'):
             id_a_borrar = request.POST.get('id')
-            tuple = user.objects.get(id=id_a_borrar)
-            tuple.delete()
+            # حذف المستخدم باستخدام الـ ID
+            user_to_delete = user.objects.get(id=id_a_borrar)
+            user_to_delete.delete()
             return redirect('list')
     else:
-        users=user.objects.all()
-        datos={'user':users}
-        return render(request , "CRUD_user/eliminate.html",datos)
+        # تمرير قائمة المستخدمين إلى القالب
+        users = user.objects.all()
+        datos = {'users': users}  # تغيير المفتاح إلى 'users'
+        return render(request, "CRUD_user/eliminate.html", datos)
