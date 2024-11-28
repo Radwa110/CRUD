@@ -3,8 +3,8 @@
 {% block content %}
 <div class="right_col" role="main">
     <h1> Add user </h1>
-    <form action="add" method="POST">
-        {% csrf_token %}
+    <form method="POST" action="{% url 'add' %}">  
+              {% csrf_token %}
         <div class="form-group row">
             <label for="name" class="col-4 col-form-label">name</label> 
             <div class="col-8">

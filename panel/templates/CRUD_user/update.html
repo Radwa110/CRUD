@@ -15,7 +15,7 @@
           </div>
           <select id="id" name="id" class="form-control" required>
             {% for u in user %}    
-              <option value="{{ u.id }}">{{ u.id }}</option>
+              <option value="{{ u.id }}"{%if u.id == User.id %} selected {% endif %}>{{ u.id }}</option>
             {% endfor %}    
           </select>
         </div>
@@ -29,7 +29,7 @@
           <div class="input-group-addon">
             <i class="fa fa-address-card"></i>
           </div> 
-          <input id="name" name="name" type="text" required="required" class="form-control">
+          <input id="name" name="name" type="text" required="required" class="form-control"value="{{User.name}}">
         </div>
       </div>
     </div>

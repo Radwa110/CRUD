@@ -56,10 +56,11 @@
                   </li>
                   <li><a><i class="fa fa-user"></i> user <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="list"><i class="fa fa-users"></i>List</a></li>
-                      <li><a href="add"><i class="fa fa-plus"></i>Add</a></li>
-                      <li><a href="update"><i class="fa fa-refresh"></i>Update</a></li>
-                      <li><a href="eliminate"><i class="fa fa-trash"></i>Eliminate</a></li>
+                      <li><a href="{% url 'list' %}"><i class="fa fa-users"></i>List</a></li>
+                      <li><a href="{% url 'add' %}"><i class="fa fa-plus"></i>Add</a></li>
+                      <li><a href="{% url 'update' 0 %}"><i class="fa fa-refresh"></i>Update</a></li>
+                      <li><a href="{% url 'eliminate' %}"><i class="fa fa-trash"></i>Eliminate</a></li>
+                      
                     </ul>
                   </li>
                   

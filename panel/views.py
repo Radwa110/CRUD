@@ -51,32 +51,40 @@ def add(request):
         # Render the form for a GET request
         return render(request, 'CRUD_user/add.html')
 
-def update(request):
-    if request.method == 'POST':
-        if (
-            request.POST.get('id') and 
-            request.POST.get('name') and 
-            request.POST.get('last_name') and 
-            request.POST.get('mail') and 
-            request.POST.get('phone') and 
-            request.POST.get('born')
-        ):
-            user_id_old = request.POST.get('id')
-            # جلب المستخدم الموجود من قاعدة البيانات
-            user_old = user.objects.get(id=user_id_old)
+def update(request, iduser):
+    try:
+        if request.method == 'POST':
+            if (
+                request.POST.get('id') and 
+                request.POST.get('name') and 
+                request.POST.get('last_name') and 
+                request.POST.get('mail') and 
+                request.POST.get('phone') and 
+                request.POST.get('born')
+            ):
+                user_id_old = request.POST.get('id')
+                # جلب المستخدم الموجود من قاعدة البيانات
+                user_old = user.objects.get(id=user_id_old)
 
-            # تحديث بيانات المستخدم الموجود
-            user_old.name = request.POST.get('name')
-            user_old.last_name = request.POST.get('last_name')
-            user_old.mail = request.POST.get('mail')
-            user_old.phone = request.POST.get('phone')
-            user_old.born = request.POST.get('born')
-            user_old.save()  # حفظ التعديلات في قاعدة البيانات
-            
-            return redirect('list')
-    else:  
+                # تحديث بيانات المستخدم الموجود
+                user_old.name = request.POST.get('name')
+                user_old.last_name = request.POST.get('last_name')
+                user_old.mail = request.POST.get('mail')
+                user_old.phone = request.POST.get('phone')
+                user_old.born = request.POST.get('born')
+                user_old.save()  # حفظ التعديلات في قاعدة البيانات
+                
+                return redirect('list')
+        else:  
+            users = user.objects.all()
+            User = user.objects.get(id=iduser)
+            datos = {'user': users , 'User': User}
+            return render(request, "CRUD_user/update.html", datos)
+        
+    except user.DoesNotExist:
         users = user.objects.all()
-        datos = {'user': users}
+        User = None
+        datos = {'user': users , 'User':User}
         return render(request, "CRUD_user/update.html", datos)
 
 

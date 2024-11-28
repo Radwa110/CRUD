@@ -3,8 +3,8 @@
 {% block content %}
 <div class="right_col" role="main">
  <h1> Eliminate user </h1>
- <form action="eliminate" method="POST">
- {%csrf_token%}
+ <form method="POST" action="{% url 'eliminate' %}">
+   {%csrf_token%}
    <div class="form-group row">
       <label for="name" class="col-4 col-form-label">user ID</label> 
       <div class="col-8">
