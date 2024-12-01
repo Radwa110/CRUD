@@ -9,5 +9,5 @@ urlpatterns = [
     path('list/', views.list, name="list"),
     path('add/', views.add, name="add"),
     path('update/<int:iduser>/', views.update, name="update"),
-    path('eliminate/', views.eliminate, name="eliminate"),
+    path('eliminate/<int:iduser>/', views.eliminate, name="eliminate"),
 ]

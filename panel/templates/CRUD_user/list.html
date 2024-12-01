@@ -1,42 +1,56 @@
 {% extends '../index_master.html' %}
+{%block title%}
+user list
+{%endblock%}
+
 
 {% block content %}
 <div class="right_col" role="main">
    <h1> user list </h1>
-   <table class="table ">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">name</th>
-        <th scope="col">last_name</th>
-        <th scope="col">mail</th>
-        <th scope="col">phone</th>
-        <th scope="col">born</th>
-        <th scope="col">register</th> 
-        <th scope="col">action</th> 
+   <form action="" method="POST">
+  <div style="display: inline-block">
 
-      </tr>
-    </thead>
-    <tbody>
+    {%csrf_token%}
+    <input type="text" name="keyword" id="keyword" class="form-control" style="width: 200px!important; display: inline-block;">
+  </div>
+</form>
+    <button name="add" class="btn btn-primary" onclick="window.location.href='add'"><i class="fa fa-plus"></i></button>
+    
+    <div style="overflow-x:auto;">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">name</th>
+            <th scope="col">last_name</th>
+            <th scope="col">mail</th>
+            <th scope="col">phone</th>
+            <th scope="col">born</th>
+            <th scope="col">register</th> 
+            <th scope="col">action</th> 
 
-        {% for u in user %}
+          </tr>
+        </thead>
+        <tbody>
 
-      <tr>
-        <th scope="row">{{u.id}}</th>
-        <td>{{u.name}}</td>
-        <td>{{u.last_name}}</td>
-        <td>{{u.mail}}</td>
-        <td>{{u.phone}}</td>
-        <td>{{u.born}}</td>
-        <td>{{u.register}}</td>
-        <td>
-          <button class="btn btn-warning"><i class="fa fa-refresh"></i></button>
-          <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            {% for u in user %}
 
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% endblock %}
+          <tr>
+            <th scope="row">{{u.id}}</th>
+            <td>{{u.name}}</td>
+            <td>{{u.last_name}}</td>
+            <td>{{u.mail}}</td>
+            <td>{{u.phone}}</td>
+            <td>{{u.born}}</td>
+            <td>{{u.register}}</td>
+            <td>
+              <button class="btn btn-warning" onclick="window.location.href='/update/{{ u.id }}/'"><i class="fa fa-refresh"></i></button>
+              <button class="btn btn-danger"onclick="window.location.href='/eliminate/{{ u.id }}/'"><i class="fa fa-trash"></i></button>
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endblock %}

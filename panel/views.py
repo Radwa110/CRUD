@@ -3,6 +3,7 @@ from django.shortcuts import render , redirect
 from django.http import HttpResponse
 from .models import user
 from django.utils.timezone import now
+from django.db.models import Q
 
 # Create your views here.
 TEMPLATE_DIRS =(
@@ -13,9 +14,27 @@ def index(request):
     return render(request , "index.html")
 
 def list(request):
-    users=user.objects.all()
-    datos={'user':users}
-    return render(request , "CRUD_user/list.html",datos)
+    if request.method=='POST':
+        palabra = request.POST.get('keyword')
+        lista = user.object.all()
+
+        if palabra is not None :
+            resultado_busqueda = lista.filter(
+                Q(id_iconatins=palabra) |
+                Q(name__iconatins=palabra)|
+                Q(last_name_iconatins=palabra)|
+                Q(mail_iconatins=palabra)|
+                Q(phone_iconatins=palabra)
+            )
+            datos = {'user': resultado_busqueda}
+            return render(request , "CRUD_user/list.html",datos)
+        else:
+            datos = {'user': lista}
+            return render(request , "CRUD_user/list.html",datos)
+    else:
+        users=user.objects.order_by('-id')[:10]
+        datos={'user':users}
+        return render(request , "CRUD_user/list.html",datos)
 
 from django.shortcuts import render, redirect
 from .models import user  # Ensure your model is correctly imported
@@ -88,16 +107,26 @@ def update(request, iduser):
         return render(request, "CRUD_user/update.html", datos)
 
 
-def eliminate(request):
-    if request.method == 'POST':
-        if request.POST.get('id'):
-            id_a_borrar = request.POST.get('id')
-            # حذف المستخدم باستخدام الـ ID
-            user_to_delete = user.objects.get(id=id_a_borrar)
-            user_to_delete.delete()
-            return redirect('list')
-    else:
-        # تمرير قائمة المستخدمين إلى القالب
+def eliminate(request ,iduser):
+    try:
+        if request.method == 'POST':
+            if request.POST.get('id'):
+                id_a_borrar = request.POST.get('id')
+                # حذف المستخدم باستخدام الـ ID
+                user_to_delete = user.objects.get(id=id_a_borrar)
+                user_to_delete.delete()
+                return redirect('list')
+        else:
+            # تمرير قائمة المستخدمين إلى القالب
+            users = user.objects.all()
+            User = user.objects.get(id=iduser)
+            datos = {'users': users , 'User':User }  # تغيير المفتاح إلى 'users'
+            return render(request, "CRUD_user/eliminate.html", datos)
+        
+    except user.DoesNotExist:
         users = user.objects.all()
-        datos = {'users': users}  # تغيير المفتاح إلى 'users'
+        User = None
+        datos = {'user': users , 'User':User}
         return render(request, "CRUD_user/eliminate.html", datos)
+    
+        
