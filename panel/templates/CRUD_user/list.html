@@ -9,12 +9,14 @@ user list
    <h1> user list </h1>
    <form action="" method="POST">
   <div style="display: inline-block">
-
     {%csrf_token%}
-    <input type="text" name="keyword" id="keyword" class="form-control" style="width: 200px!important; display: inline-block;">
+    <input type="text" name="keyword" id="keyword" class="form-control" style="width: 200px!important; display: inline-block;"><button type="submit" name="search" class="btn btn-success" style="display:inline-block"><i class="fa fa-search"></i></button>
   </div>
 </form>
-    <button name="add" class="btn btn-primary" onclick="window.location.href='add'"><i class="fa fa-plus"></i></button>
+<button name="add" class="btn btn-primary" onclick="window.location.href='/add/'">
+  <i class="fa fa-plus"></i> new user
+</button>
+
     
     <div style="overflow-x:auto;">
       <table class="table ">

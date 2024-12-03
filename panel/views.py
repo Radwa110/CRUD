@@ -13,28 +13,39 @@ TEMPLATE_DIRS =(
 def index(request):
     return render(request , "index.html")
 
-def list(request):
-    if request.method=='POST':
-        palabra = request.POST.get('keyword')
-        lista = user.object.all()
 
-        if palabra is not None :
-            resultado_busqueda = lista.filter(
-                Q(id_iconatins=palabra) |
-                Q(name__iconatins=palabra)|
-                Q(last_name_iconatins=palabra)|
-                Q(mail_iconatins=palabra)|
-                Q(phone_iconatins=palabra)
-            )
+def list(request):
+    if request.method == 'POST':
+        palabra = request.POST.get('keyword')
+        lista = user.objects.all()
+
+        if palabra:  # إذا كانت الكلمة غير فارغة
+            try:
+                # إذا كانت الكلمة قابلة للتحويل إلى رقم
+                resultado_busqueda = lista.filter(
+                    Q(id=int(palabra)) |  # البحث في id كرقم
+                    Q(name__icontains=palabra) |
+                    Q(last_name__icontains=palabra) |
+                    Q(mail__icontains=palabra) |
+                    Q(phone__icontains=palabra)
+                )
+            except ValueError:
+                # إذا كانت الكلمة نصًا
+                resultado_busqueda = lista.filter(
+                    Q(name__icontains=palabra) |
+                    Q(last_name__icontains=palabra) |
+                    Q(mail__icontains=palabra) |
+                    Q(phone__icontains=palabra)
+                )
             datos = {'user': resultado_busqueda}
-            return render(request , "CRUD_user/list.html",datos)
         else:
-            datos = {'user': lista}
-            return render(request , "CRUD_user/list.html",datos)
+            datos = {'user': lista}  # إذا كانت الكلمة فارغة
+        return render(request, "CRUD_user/list.html", datos)
     else:
-        users=user.objects.order_by('-id')[:10]
-        datos={'user':users}
-        return render(request , "CRUD_user/list.html",datos)
+        users = user.objects.order_by('-id')[:10]
+        datos = {'user': users}
+        return render(request, "CRUD_user/list.html", datos)
+
 
 from django.shortcuts import render, redirect
 from .models import user  # Ensure your model is correctly imported
